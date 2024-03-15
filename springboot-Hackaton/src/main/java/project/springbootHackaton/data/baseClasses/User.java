@@ -3,6 +3,8 @@ package project.springbootHackaton.data.baseClasses;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
 //import project.springbootHackaton.data.baseClasses.UserProfile;
 
 @Getter
@@ -11,20 +13,38 @@ import lombok.Setter;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Getter
+    @Setter
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer userID;
 
     @Getter
     @Setter
+    @Column(nullable = false, length = 255)
     private String name;
 
     @Getter
     @Setter
+    @Column(nullable = false, unique = true, length = 255)
     private String email;
 
     @Getter
     @Setter
+    @Column(nullable = false, length = 255)
     private String password;
+
+    @Getter
+    @Setter
+    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date registrationDate;
+
+
+    @Getter
+    @Setter
+    @Temporal(TemporalType.DATE)
+    private Date lastLogin;
+
 
 
     @Getter

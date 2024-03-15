@@ -1,5 +1,6 @@
 package project.springbootHackaton.Controller;
 
+import org.springframework.http.HttpStatus;
 import project.springbootHackaton.data.baseClasses.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import project.springbootHackaton.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -23,7 +25,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
+        User createdUser = userService.registerUser(user.getEmail(), user.getPassword(), user.getName());
         return ResponseEntity.ok(createdUser);
     }
 
@@ -45,6 +47,7 @@ public class UserController {
         return userService.deleteUser(id);
 
     }
+
 
 
 

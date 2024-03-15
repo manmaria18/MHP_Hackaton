@@ -1,104 +1,68 @@
 document.addEventListener('DOMContentLoaded', () => {
-    init();
+    document.getElementById('loginButton').addEventListener('click', loginUser);
+    document.getElementById('registerButton').addEventListener('click', registerUser);
+    document.getElementById('showRegisterForm').addEventListener('click', showRegistrationForm);
+    document.getElementById('showLoginForm').addEventListener('click', showLoginForm);
 });
 
-async function init() {
-    bindEventListeners();
-    await loadUsers();
+function showRegistrationForm(event) {
+    event.preventDefault();
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('registrationSection').style.display = '';
 }
 
-function bindEventListeners() {
-    document.getElementById('createUserButton').addEventListener('click', createUser);
-    document.getElementById('usersContainer').addEventListener('click', function(event) {
-        if (event.target.classList.contains('delete-user-btn')) {
-            const userId = event.target.getAttribute('data-user-id');
-            deleteUser(userId);
-        }
-    });
+function showLoginForm(event) {
+    event.preventDefault();
+    document.getElementById('registrationSection').style.display = 'none';
+    document.getElementById('loginSection').style.display = '';
 }
-async function createUser() {
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value; // Assuming you have this field in your form
-    const roleId = document.getElementById('roleId').value; // Get the role ID from the form
+
+async function loginUser() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
 
     try {
-        const response = await fetch('http://localhost:8080/users', {
+        const response = await fetch('/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, password, role: { id: roleId } }) // Adjust the payload to include the role ID
+            body: JSON.stringify({ email, password })
         });
 
         if (response.ok) {
-            const newUser = await response.json();
-            console.log('User created:', newUser);
-            addUserToDOM(newUser);
-            clearForm();
+            const data = await response.json();
+            console.log('Login successful:', data);
+            alert('Login successful. Redirecting...');
+            document.getElementById('loginSection').style.display = 'none';
         } else {
-            console.error('Failed to create user:', await response.text());
+            console.error('Login failed:', await response.text());
+            alert('Login failed: Invalid email or password.');
         }
     } catch (error) {
-        console.error('Error creating user:', error);
+        console.error('Error logging in:', error);
+        alert('Login error. Please try again later.');
     }
 }
 
-function clearForm() {
-    document.getElementById('name').value = '';
-    document.getElementById('email').value = '';
-    document.getElementById('password').value = ''; // Clear the password field
-    document.getElementById('roleId').value = ''; // Clear the role ID field
-}
+async function registerUser() {
+    const name = document.getElementById('registerName').value;
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
 
-
-function clearForm() {
-    document.getElementById('name').value = '';
-    document.getElementById('email').value = '';
-    document.getElementById('bio').value = '';
-}
-
-async function loadUsers() {
     try {
-        const response = await fetch('http://localhost:8080/users');
-        if (response.ok) {
-            const users = await response.json();
-            const usersContainer = document.getElementById('usersContainer');
-            usersContainer.innerHTML = ''; // Clear the container before adding users
-            users.forEach(addUserToDOM);
-        } else {
-            console.error('Failed to load users:', await response.text());
-        }
-    } catch (error) {
-        console.error('Error loading users:', error);
-    }
-}
-
-function addUserToDOM(user) {
-    const usersContainer = document.getElementById('usersContainer');
-    const userCard = document.createElement('div');
-    userCard.classList.add('user-card');
-    userCard.innerHTML = `
-        <p><strong>Name:</strong> ${user.name}</p>
-        <p><strong>Email:</strong> ${user.email}</p>
-        <p><strong>Role:</strong> ${user.role ? user.role.name : 'N/A'}</p> <!-- Display role name -->
-        <button class="delete-user-btn" data-user-id="${user.id}">Delete User</button>
-    `;
-    usersContainer.appendChild(userCard);
-}
-
-
-async function deleteUser(userId) {
-    try {
-        const response = await fetch(`http://localhost:8080/users/${userId}`, {
-            method: 'DELETE'
+        const response = await fetch('/users', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password, name }) // Adjusted to match the expected backend format
         });
 
         if (response.ok) {
-            console.log('User deleted:', userId);
-            loadUsers(); // Reload the users to reflect the deletion
+            alert('Registration successful. Please log in.');
+            showLoginForm(new Event('click'));
         } else {
-            console.error('Failed to delete user:', await response.text());
+            alert('Registration failed. Please try again.');
         }
     } catch (error) {
-        console.error('Error deleting user:', error);
+        console.error('Error registering user:', error);
+        alert('Error registering. Please check your connection and try again.');
     }
 }
