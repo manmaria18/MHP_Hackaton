@@ -1,0 +1,97 @@
+:root {
+    --primary-color: #005792;
+    --hover-color: #003d5b;
+    --font-color: #333;
+    --background-color: #f9f9f9;
+    --card-background-color: #ffffff;
+    --border-color: #ddd;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: var(--background-color);
+    color: var(--font-color);
+}
+
+h1 {
+    color: var(--primary-color);
+}
+
+.form-control, button, .user-card {
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+}
+
+.form-control {
+    width: calc(100% - 22px);
+    padding: 10px;
+}
+
+button {
+    width: auto;
+    padding: 10px 15px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--hover-color);
+}
+
+.user-card {
+    background-color: var(--card-background-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .form-control, button, .user-card {
+        margin-bottom: 15px;
+    }
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.form-section, .users-section {
+    background-color: var(--card-background-color);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.submit-btn {
+    display: block;
+    width: 100%;
+}
