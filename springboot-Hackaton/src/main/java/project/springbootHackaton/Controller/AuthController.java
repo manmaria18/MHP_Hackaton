@@ -3,10 +3,7 @@ package project.springbootHackaton.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import project.springbootHackaton.data.baseClasses.User;
 import project.springbootHackaton.data.dto.LoginRequest;
 import project.springbootHackaton.data.dto.LoginResponse;
@@ -16,6 +13,7 @@ import project.springbootHackaton.service.UserService;
 import javax.naming.AuthenticationException;
 
 @RestController
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RequestMapping("/auth") // r
 public class AuthController {
 
