@@ -19,13 +19,14 @@ function bindEventListeners() {
 async function createUser() {
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
-    const bio = document.getElementById('bio').value;
+    const password = document.getElementById('password').value; // Assuming you have this field in your form
+    const roleId = document.getElementById('roleId').value; // Get the role ID from the form
 
     try {
         const response = await fetch('http://localhost:8080/users', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, profile: { bio } })
+            body: JSON.stringify({ name, email, password, role: { id: roleId } }) // Adjust the payload to include the role ID
         });
 
         if (response.ok) {
@@ -40,6 +41,14 @@ async function createUser() {
         console.error('Error creating user:', error);
     }
 }
+
+function clearForm() {
+    document.getElementById('name').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('password').value = ''; // Clear the password field
+    document.getElementById('roleId').value = ''; // Clear the role ID field
+}
+
 
 function clearForm() {
     document.getElementById('name').value = '';
@@ -70,11 +79,12 @@ function addUserToDOM(user) {
     userCard.innerHTML = `
         <p><strong>Name:</strong> ${user.name}</p>
         <p><strong>Email:</strong> ${user.email}</p>
-        <p><strong>Bio:</strong> ${user.profile ? user.profile.bio : 'N/A'}</p>
-        <button onclick="deleteUser('${user.id}')">Delete User</button>
+        <p><strong>Role:</strong> ${user.role ? user.role.name : 'N/A'}</p> <!-- Display role name -->
+        <button class="delete-user-btn" data-user-id="${user.id}">Delete User</button>
     `;
     usersContainer.appendChild(userCard);
 }
+
 
 async function deleteUser(userId) {
     try {
